@@ -96,7 +96,7 @@ def get_percentile(distribution : str,
     elif distribution.lower() == "normal":
         mean = var1
         stdev = var2
-        return truncnorm.cdf(0, np.inf, loc=mean, scale=stdev, a=(0-mean)/stdev, b=np.inf)
+        return truncnorm.cdf(x, loc=mean, scale=stdev, a=(0-mean)/stdev, b=np.inf)
     
     # Uniform distribution
     elif distribution.lower() == "uniform":
