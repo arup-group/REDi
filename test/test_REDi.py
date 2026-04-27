@@ -112,15 +112,15 @@ def test_individual_functions(test_building_1,
                                                     repair_sequence=repair_sequence, 
                                                     component_qty=component_qty)
    
-   assert(max_delay==174.4460786784853)
+   assert(max_delay==132.40629299878913)
    assert(impeding_delays['inspection_delay']==0.9427842384564218)
    assert(impeding_delays['permit_delay']==1.5489606840065457)
    nonstruct_contractor_delays=impeding_delays["nonstruct_contractor_mobilization_delays"]
-   assert(nonstruct_contractor_delays[0]==183.03043068836655)
+   assert(nonstruct_contractor_delays[0]==158.49390407712343)
 
    # Get structural and nonstructural delays
    max_workers = get_max_workers(building=test_building_1)
-   assert(max_workers==52.95038890403064)
+   assert(max_workers==38.62252546691076)
    
    struc_workers = get_struct_workers(building=test_building_1)
    assert(struc_workers[0]==67.13599283155008)
@@ -167,7 +167,7 @@ def test_individual_functions(test_building_1,
                                                           n_repair_goal=test_building_1.n_repair_goal,
                                                           n_sequence=test_building_1.n_sequences)
 
-   assert(repair_schedule[1]['total_span']==404.9035212096834)
+   assert(repair_schedule[1]['total_span']==380.36699459844033)
 
    test_building_1.repair_schedule = repair_schedule
 
@@ -177,7 +177,7 @@ def test_individual_functions(test_building_1,
                                               struc_days=struc_repair_days,
                                               n_repair_goal=test_building_1.n_repair_goal)
 
-   assert(building_total_downtime[2]==191.11405103396697)
+   assert(building_total_downtime[2]==166.57752442272385)
 
 
 def test_go_redi(test_building_2,
@@ -188,6 +188,6 @@ def test_go_redi(test_building_2,
                  seed=123,
                  burn_in=248)
    
-   assert(res['building_total_downtime'][0]==426.509427488184)
-   assert(res['building_total_downtime'][1]==404.9035212096834)
-   assert(res['building_total_downtime'][2]==191.11405103396697)
+   assert(res['building_total_downtime'][0]==398.83159383072984)
+   assert(res['building_total_downtime'][1]==380.36699459844033)
+   assert(res['building_total_downtime'][2]==166.57752442272385)

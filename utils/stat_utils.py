@@ -53,7 +53,7 @@ def sample_dist(distribution : str,
         mean = var1
         stdev = var2
         rnd_num = gen_random()
-        return truncnorm.ppf(rnd_num, a=0, b=np.inf, loc=mean, scale=stdev)
+        return truncnorm.ppf(rnd_num, a=(0-mean)/stdev, b=np.inf, loc=mean, scale=stdev)
 
     # Uniform sample
     elif distribution.lower() == "uniform":
