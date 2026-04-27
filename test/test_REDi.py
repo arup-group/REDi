@@ -85,18 +85,22 @@ def test_individual_functions(test_building_1,
    assert(consequence_by_component_by_floor["D3041.031b"][1][2]==30.117809623428833)
 
 
-   repair_sequence_by_floor = get_repair_sequence_by_floor(repair_class_by_component=repair_class, 
+   repair_sequence_by_floor = get_repair_sequence_by_floor(repair_class_by_component=repair_class,
                                                            consequence_by_component_by_floor=consequence_by_component_by_floor,
                                                            nTotalFloor=nTotalFloor,
-                                                           components_lib=test_component_library_1)
+                                                           components_lib=test_component_library_1,
+                                                           n_sequences=test_building_1.n_sequences,
+                                                           n_repair_goal=test_building_1.n_repair_goal)
    test_building_1.repair_sequence_by_floor = repair_sequence_by_floor
 
    assert(repair_sequence_by_floor[0][0][0]==81.62406341817247)
    assert(repair_sequence_by_floor[1][1][1]==397.850409057227)
    assert(repair_sequence_by_floor[2][1][2]==30.686167235287016)
 
-   repair_sequence = get_repair_sequence(repair_sequence_by_floor=repair_sequence_by_floor, 
-                                          nTotalFloor=nTotalFloor)
+   repair_sequence = get_repair_sequence(repair_sequence_by_floor=repair_sequence_by_floor,
+                                          nTotalFloor=nTotalFloor,
+                                          n_sequences=test_building_1.n_sequences,
+                                          n_repair_goal=test_building_1.n_repair_goal)
    test_building_1.repair_sequence = repair_sequence
 
    assert(repair_sequence[0][0]==349.70216765886994)
@@ -140,33 +144,38 @@ def test_individual_functions(test_building_1,
    # capacity: [nRealization x [ n_non_struc_repair_sequence]]
    capacity = get_worker_capacity(building=test_building_1,
                                  components_lib=test_component_library_1,
-                                 floor_areas=floor_areas, 
-                                 damage_qty=damage_qty, 
-                                 nTotalFloor=nTotalFloor)
-   
+                                 floor_areas=floor_areas,
+                                 damage_qty=damage_qty,
+                                 nTotalFloor=nTotalFloor,
+                                 n_non_struc_sequence=test_building_1.n_non_struc_sequence)
+
    assert(capacity[0][0]==19.171932617861405)
 
    constraint = get_constrained_workers(building = test_building_1)
 
    assert(constraint[1]==11.37661283387764)
 
-   repair_schedule = get_repair_schedule_unit_realization(delay=[max_delay], 
-                                                          struc_repair_days=struc_repair_days, 
-                                                          nonstruct_contractor_delays=nonstruct_contractor_delays, 
-                                                          sequence_demand=repair_sequence_by_floor, 
-                                                          capacity=capacity, 
+   repair_schedule = get_repair_schedule_unit_realization(delay=[max_delay],
+                                                          struc_repair_days=struc_repair_days,
+                                                          nonstruct_contractor_delays=nonstruct_contractor_delays,
+                                                          sequence_demand=repair_sequence_by_floor,
+                                                          capacity=capacity,
                                                           nWorker=max_workers,
-                                                          nTotalFloor=nTotalFloor, 
-                                                          constraint=constraint)
-   
+                                                          nTotalFloor=nTotalFloor,
+                                                          constraint=constraint,
+                                                          n_non_struc_sequence=test_building_1.n_non_struc_sequence,
+                                                          n_repair_goal=test_building_1.n_repair_goal,
+                                                          n_sequence=test_building_1.n_sequences)
+
    assert(repair_schedule[1]['total_span']==404.9035212096834)
 
    test_building_1.repair_schedule = repair_schedule
 
     # Get total downtime, including delays and repair time
-   building_total_downtime = process_downtime(repair_schedule, 
-                                              max_delay=[max_delay], 
-                                              struc_days=struc_repair_days)
+   building_total_downtime = process_downtime(repair_schedule,
+                                              max_delay=[max_delay],
+                                              struc_days=struc_repair_days,
+                                              n_repair_goal=test_building_1.n_repair_goal)
 
    assert(building_total_downtime[2]==191.11405103396697)
 
