@@ -53,7 +53,7 @@ def sample_dist(distribution : str,
         mean = var1
         stdev = var2
         rnd_num = gen_random()
-        return truncnorm.ppf(rnd_num, a=0, b=np.inf, loc=mean, scale=stdev)
+        return truncnorm.ppf(rnd_num, a=(0-mean)/stdev, b=np.inf, loc=mean, scale=stdev)
 
     # Uniform sample
     elif distribution.lower() == "uniform":
@@ -96,7 +96,7 @@ def get_percentile(distribution : str,
     elif distribution.lower() == "normal":
         mean = var1
         stdev = var2
-        return truncnorm.cdf(0, np.inf, loc=mean, scale=stdev, a=(0-mean)/stdev, b=np.inf)
+        return truncnorm.cdf(x, loc=mean, scale=stdev, a=(0-mean)/stdev, b=np.inf)
     
     # Uniform distribution
     elif distribution.lower() == "uniform":
